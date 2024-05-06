@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/_core/constants/http.dart';
 import 'package:flutter_blog/_core/constants/size.dart';
+import 'package:flutter_blog/data/models/user.dart';
 
 class PostDetailProfile extends StatelessWidget {
-
-  const PostDetailProfile({Key? key}) : super(key: key);
-
+  User user;
+  PostDetailProfile(this.user);
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        title: Text("ssar"),
+        title: Text("${user.username}"),
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(50),
-          child: Image.asset('assets/default_profile.png'),
+          child: Image.network('${baseUrl + user.imgUrl}'),
         ),
         subtitle: Row(
           children: [
-            Text("ssar@nate.com"),
+            Text("${user.email}"),
             const SizedBox(width: mediumGap),
             const Text("·"),
             const SizedBox(width: mediumGap),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blog/_core/constants/size.dart';
 import 'package:flutter_blog/_core/utils/validator_util.dart';
+import 'package:flutter_blog/data/dtos/post_request.dart';
+import 'package:flutter_blog/ui/pages/post/list_page/post_list_viewmodel.dart';
 import 'package:flutter_blog/ui/widgets/custom_elavated_button.dart';
 import 'package:flutter_blog/ui/widgets/custom_text_area.dart';
 import 'package:flutter_blog/ui/widgets/custom_text_form_field.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PostWriteForm extends StatelessWidget {
+class PostWriteForm extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
   final _title = TextEditingController();
   final _content = TextEditingController();
@@ -13,7 +16,7 @@ class PostWriteForm extends StatelessWidget {
   PostWriteForm({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Form(
       key: _formKey,
       child: ListView(
@@ -34,6 +37,10 @@ class PostWriteForm extends StatelessWidget {
             text: "글쓰기",
             funPageRoute: () async {
               if (_formKey.currentState!.validate()) {
+                PostSaveReqDTO reqDTO = PostSaveReqDTO(
+                    title: _title.text.trim(), content: _content.text.trim());
+
+                ref.read(postListProvider.notifier).notifyAdd(reqDTO);
               }
             },
           ),
